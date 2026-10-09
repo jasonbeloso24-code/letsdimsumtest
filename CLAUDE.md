@@ -10,7 +10,7 @@ This file has three parts: the Let's Dimsum project notes, how to install the to
 
 **Status:** The design is built and approved by Christian. Do not change the look, layout, copy, images or animation timing unless Christian asks.
 
-**Stack as built:** Vite (vanilla HTML, CSS and JS) with Lenis for smooth scrolling and GSAP for scroll animations. This differs from the agency default (Astro on Cloudflare Pages, Motion for animation). Keeping Vite is a decision for Christian. List any standard the current build doesn't meet instead of fixing it silently.
+**Stack:** Astro, static output, on Cloudflare Pages, because it's a restaurant marketing site with no logins and it's the agency default. Motion (lazy-loaded) for animation and Lenis for smooth scrolling. The Keystatic admin needs a server, and Astro's Cloudflare adapter no longer supports Pages, so a Cloudflare Workers project (static assets + `@astrojs/cloudflare`) runs alongside Pages; Pages serves production until Christian approves moving the domain to Workers. List any standard the build doesn't meet instead of fixing it silently.
 
 **Folders**
 - `public/`: client branding (logo and mascot), place photos (storefront and interiors) and images (food photos and two printed menu boards).
@@ -189,27 +189,35 @@ Apply these to every website we build. The client brief overrides them only wher
 
 ---
 
-## Let's Dimsum: build reference (as built)
+## Let's Dimsum: build reference
 
-**Stack:** Astro 7 (static output, one page, `compressHTML: false` to keep the approved inline spacing), `lenis` (smooth scroll, `lerp: 0.1`), `gsap` + ScrollTrigger (reveals, hero clip, word fill, parallax). Lenis drives ScrollTrigger via `gsap.ticker`. With `prefers-reduced-motion`, Lenis, parallax and the marquee are off and content shows statically.
+**Stack:** Astro 7 with `@astrojs/cloudflare` (Workers). Every public page is prerendered; only `/keystatic` and `/api/keystatic` run on the Worker. `compressHTML: false` keeps the approved inline spacing; `inlineStylesheets: 'never'` keeps the CSP strict. Motion (`motion/mini` animate + `inView`/`scroll`) loads lazily from `src/scripts/motion.ts`; Lenis (`lerp: 0.1`) and everything else is in `src/scripts/site.ts`. Hero load motion is CSS keyframes. With `prefers-reduced-motion`, Lenis, parallax, the hero scale and the marquee are off.
 
 **Brand in code** (`src/styles/tokens.css`, the single tokens file)
 - Colors: green `#0F5A48`, yellow `#E1A507`, paper `#F5F0E6`, wood `#B98A5A` (hairlines), ink `#23201B`.
-- Derived: `--color-wood-text #8A6440` (small labels, darker for legibility), `--color-ochre #94671F` (Chinese names), `--color-paper-deep`, `--color-paper-soft`, `--color-ink-muted`.
-- Fonts (Google Fonts link in `src/pages/index.astro`): Fraunces 300 to 400 with SOFT 100 (display), Figtree 400 to 600 (body), Noto Serif SC 400 to 500 (Chinese names).
+- Derived: `--color-wood-text #8A6440` (small labels), `--color-ochre #94671F` (Chinese names), `--color-paper-deep`, `--color-paper-soft`, `--color-ink-muted`.
+- Fonts, self-hosted (`src/styles/fonts.css`, files in `src/assets/fonts/` from `scripts/subset_fonts.py`): Fraunces (display, SOFT 100, 300 to 400) and Figtree (body, 400 to 600), latin + latin-ext only. Chinese uses the system stack PingFang SC, Microsoft YaHei, Noto Sans CJK SC.
 
-**Sections** (`src/pages/index.astro`, in order): nav (SVG mascot, open-today note), hero, dish marquee, about (word fill), signature dishes, full menu (tabs), our place (photo strip, Google rating, quotes), visit, footer (wordmark 来点心).
+**Pages:** `/` (nav, hero, dish marquee, about, signature dishes, full menu, our place, visit, footer), `/menu/`, `/privacy/`, `/cookies/`, `/terms/`, `/accessibility/`, `/allergens/`, 404. Sections are components in `src/components/`.
 
-**Data and assets**
-- Menu: `src/menu-data.js` (all items from both printed boards, English and Chinese, no prices). Rendered at build time; JS only switches tabs, and without JS every category shows.
-- Facebook URL: `FACEBOOK_URL` constant at the top of `src/main.js`.
-- Images: `scripts/optimize_images.py` (`npm run images`) crops and converts originals in `public/` to WebP in `public/img/`.
+**Content and data**
+- Keystatic (`keystatic.config.ts`, GitHub mode, repo `jasonbeloso24-code/letsdimsumtest`): menu items `src/content/menu/`, signature dishes `src/content/dishes/`, photos `src/content/photos/`, hours with holidays `src/content/hours.yaml`. Read through `src/content.config.ts`.
+- Business facts and link slots: `src/data/business.ts` (`FACEBOOK_URL`, `PHONE`, `ORDER_URL`, `BOOKING_URL`, `GOOGLE_LISTING_URL`, address, price). Empty values hide their button.
+- Photos: originals in `source-assets/` (not shipped); `npm run images` crops them into `src/assets/photos/`; Astro `<Picture>` makes AVIF/WebP. `npm run menu-pdf` builds `public/menu/lets-dimsum-menu.pdf`. `npm run favicons` builds the favicon set. `public/og.png` is generated on every build.
+- Env: `SITE_URL` (canonical/OG/sitemap), `PUBLIC_GTM_ID` (analytics + cookie banner appear only when set), Keystatic secrets (Cloudflare secrets, never the repo).
+
+**Checks:** `npm run check` (types), `npm test`, `npm run build`, `npm run check:dist` (CSP hashes, title/description lengths, one h1). CI runs these plus lychee and Lighthouse CI on every PR.
 
 **[CLIENT TO CONFIRM]**
+- Production URL (`SITE_URL`) and custom domain
 - Full street address (currently San Rafael, San Pablo City, Laguna, plus code 38C4+92Q)
 - Phone number
-- Hours, plus holiday hours
+- Hours and holiday hours (Keystatic "Confirmed by the owners" box is unticked)
+- Price range (₱500 to ₱1,000 per person, user-reported on Google)
+- Google listing link (found by search, CID 2382240538264847043)
 - Ordering and booking links (Grab, Foodpanda, reservations)
-- Allergen information
+- Allergen information per dish
 - Facebook page URL
-- Permission to quote guest reviews (the three quote cards are placeholders)
+- GTM container ID
+- Guest reviews, real and with permission (none on the site now)
+- Legal pages: business name, DPO contact, retention periods, lawyer review

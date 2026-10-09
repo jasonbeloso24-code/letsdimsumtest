@@ -1,0 +1,73 @@
+---
+import '../styles/fonts.css';
+import '../styles/main.css';
+import 'lenis/dist/lenis.css';
+import frauncesLatin from '../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** The one-page home: nav links stay in-page anchors. */
+  home?: boolean;
+  jsonLd?: object[];
+  noindex?: boolean;
+}
+
+const { title, description, home = false, jsonLd = [], noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <meta name="theme-color" content="#F5F0E6" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Let's Dimsum" />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Let's Dimsum, authentic Chinese dim sum in San Pablo City, Laguna" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+
+    <!-- Marks JS as available and opts into entrance motion before first paint. Hash is in public/_headers. -->
+    <script is:inline>document.documentElement.classList.add('js');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion');</script>
+
+    {jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav home={home} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer home={home} />
+    <CookieBanner />
+
+    <script>
+      import '../scripts/site';
+    </script>
+  </body>
+</html>

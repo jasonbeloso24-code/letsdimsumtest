@@ -1,0 +1,31 @@
+---
+import { Picture } from 'astro:assets';
+import hero from '../assets/photos/hero-table.jpg';
+---
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero__inner container">
+    <div class="hero__copy">
+      <p class="eyebrow hero__eyebrow" data-hero-fade="1">Let's Dimsum, San Pablo City</p>
+      <h1 class="hero__title" id="hero-title">
+        <span class="line"><span class="line__inner">Steamed fresh,</span></span>
+        <span class="line"><span class="line__inner">served warm.</span></span>
+      </h1>
+      <p class="hero__lede" data-hero-fade="2">
+        Dumplings, soft buns and noodle soups, from the bamboo steamer to your table.
+      </p>
+      <a class="btn btn--primary" href="#menu" data-hero-fade="3">See the menu</a>
+    </div>
+
+    <figure class="hero__media" data-hero-media>
+      <Picture
+        src={hero}
+        formats={['avif', 'webp']}
+        widths={[480, 768, 1024, 1400]}
+        sizes="(max-width: 52rem) calc(100vw - 2rem), 46vw"
+        alt="Overhead view of a wooden table full of dim sum: purple ube buns in a steamer, siomai, sesame balls, dumplings, rice bowls and bok choy."
+        loading="eager"
+        fetchpriority="high"
+      />
+    </figure>
+  </div>
+</section>

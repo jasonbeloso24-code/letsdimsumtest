@@ -1,0 +1,37 @@
+---
+import { Picture } from 'astro:assets';
+import { photosFor } from '../data/content';
+
+const TEXT =
+  "Let's Dimsum is a cozy corner of San Pablo for authentic Chinese dim sum. Baskets come out of the steamer and straight to your table, still warm. Pull up a wooden chair by the window, order a few plates to share, and take your time.";
+const words = TEXT.split(' ');
+const [a, b] = await photosFor('about');
+---
+<section class="about section" id="about" aria-labelledby="about-title">
+  <div class="about__inner container">
+    <div class="about__copy">
+      <p class="eyebrow" data-reveal>Our corner · 我们的小店</p>
+      <h2 class="visually-hidden" id="about-title">About Let's Dimsum</h2>
+      <p class="about__text" data-word-fill>
+        {words.map((w, i) => <Fragment><span class="word">{w}</span>{i < words.length - 1 && ' '}</Fragment>)}
+      </p>
+    </div>
+
+    <div class="about__media">
+      {[a, b].map((photo, i) => (
+        <figure class={`about__photo about__photo--${i ? 'b' : 'a'}`} data-reveal>
+          <div class="parallax">
+            <Picture
+              src={photo.data.image}
+              formats={['avif', 'webp']}
+              widths={[360, 600, 900]}
+              sizes="(max-width: 52rem) 60vw, 26vw"
+              alt={photo.data.alt}
+              data-parallax
+            />
+          </div>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

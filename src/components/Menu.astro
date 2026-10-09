@@ -1,0 +1,61 @@
+---
+import { MENU_CATEGORIES, MENU_PDF } from '../data/menu';
+import { menuItems } from '../data/content';
+
+interface Props {
+  /** h1 on the /menu page, h2 on the home page. */
+  titleTag?: 'h1' | 'h2';
+}
+const { titleTag: Title = 'h2' } = Astro.props;
+const Panel = Title === 'h1' ? 'h2' : 'h3';
+
+const items = await menuItems();
+const categories = MENU_CATEGORIES.map((cat) => ({ ...cat, items: items.filter((i) => i.data.category === cat.id) }));
+---
+<section class="menu section" id="menu" aria-labelledby="menu-title" data-menu-section>
+  <div class="container">
+    <header class="section-head section-head--center">
+      <p class="eyebrow" data-reveal>The full menu · 菜单</p>
+      <Title class="section-title" id="menu-title" data-reveal>Everything from the steamer</Title>
+    </header>
+
+    <div class="menu__tabs-wrap" data-reveal>
+      <div class="menu__tabs" role="tablist" aria-label="Menu categories" data-menu-tabs>
+        {categories.map((cat, i) => (
+          <button
+            type="button"
+            class="menu__tab"
+            id={`tab-${cat.id}`}
+            role="tab"
+            aria-controls={`panel-${cat.id}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {categories.map((cat, i) => (
+      <div class="menu__panel" id={`panel-${cat.id}`} role="tabpanel" tabindex="0" aria-labelledby={`tab-${cat.id}`} hidden={i !== 0}>
+        <div class="menu__heading">
+          <Panel>{cat.label}</Panel>
+          <span lang="zh-Hans">{cat.zh}</span>
+        </div>
+        <ul class="menu__list" role="list">
+          {cat.items.map((item) => (
+            <li class="menu__item">
+              <span class="menu__en">{item.data.name}</span>
+              <span class="menu__zh" lang="zh-Hans">{item.data.zh}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+
+    <p class="menu__pdf">
+      <a class="link-quiet" href={MENU_PDF} download>Download the printed menu (PDF, 430 KB)</a>
+    </p>
+  </div>
+</section>

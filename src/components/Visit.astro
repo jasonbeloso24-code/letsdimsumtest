@@ -1,0 +1,99 @@
+---
+import { Picture } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import { photosFor } from '../data/content';
+import {
+  ADDRESS,
+  ADDRESS_LINE,
+  PRICE_PER_PERSON,
+  MAPS_URL,
+  PHONE,
+  ORDER_URL,
+  BOOKING_URL,
+  FACEBOOK_URL,
+} from '../data/business';
+
+const hours = (await getEntry('hours', 'hours'))!.data;
+const [storefront] = await photosFor('visit');
+const dateFmt = new Intl.DateTimeFormat('en-PH', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+<section class="visit section" id="visit" aria-labelledby="visit-title">
+  <div class="visit__inner container">
+    <div class="visit__info">
+      <p class="eyebrow" data-reveal>Visit · 来访</p>
+      <h2 class="section-title" id="visit-title" data-reveal>Come in, sit down, stay a while</h2>
+
+      <dl class="visit__details">
+        <div class="visit__row" data-reveal>
+          <dt>Address</dt>
+          <dd>
+            <address>{ADDRESS_LINE}</address>
+            <span class="visit__muted">Plus code {ADDRESS.plusCode}</span>
+          </dd>
+        </div>
+        <div class="visit__row" data-reveal>
+          <dt>Hours</dt>
+          <dd>
+            <table class="hours">
+              <caption class="visually-hidden">Opening hours</caption>
+              <tbody>
+                {hours.rows.map((row) => (
+                  <tr data-days={row.days.join(',')}>
+                    <th scope="row">{row.label}</th>
+                    <td>{row.opens} to {row.closes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {hours.holidays.length > 0 && (
+              <table class="hours hours--holidays">
+                <caption class="visit__muted">Holiday hours</caption>
+                <tbody>
+                  {hours.holidays.map((h) => (
+                    <tr>
+                      <th scope="row">{h.label}, {dateFmt.format(h.date)}</th>
+                      <td>{h.hours}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </dd>
+        </div>
+        <div class="visit__row" data-reveal>
+          <dt>Spend</dt>
+          <dd class="visit__muted">{PRICE_PER_PERSON}</dd>
+        </div>
+      </dl>
+
+      <div class="visit__actions" data-reveal>
+        <a class="btn btn--primary" href={MAPS_URL} target="_blank" rel="noopener" data-track="directions_click">
+          Get directions<span class="visually-hidden"> (opens Google Maps)</span>
+        </a>
+        {PHONE && <a class="btn btn--quiet" href={`tel:${PHONE}`} data-track="call_click">Call us</a>}
+        {ORDER_URL && <a class="btn btn--quiet" href={ORDER_URL} target="_blank" rel="noopener" data-track="order_click">Order online</a>}
+        {BOOKING_URL && <a class="btn btn--quiet" href={BOOKING_URL} target="_blank" rel="noopener" data-track="reservation_click">Book a table</a>}
+        {FACEBOOK_URL && (
+          <a class="link-quiet" href={FACEBOOK_URL} target="_blank" rel="noopener">
+            Facebook · LET'S Dimsum - San Pablo City
+          </a>
+        )}
+      </div>
+    </div>
+
+    {storefront && (
+      <figure class="visit__photo" data-reveal>
+        <div class="parallax">
+          <Picture
+            src={storefront.data.image}
+            formats={['avif', 'webp']}
+            widths={[600, 1000, 1400]}
+            sizes="(max-width: 52rem) calc(100vw - 2rem), 44vw"
+            alt={storefront.data.alt}
+            data-parallax
+          />
+        </div>
+      </figure>
+    )}
+  </div>
+</section>

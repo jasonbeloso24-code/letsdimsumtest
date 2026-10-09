@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import Menu from '../components/Menu.astro';
+import { menuSchema } from '../data/schema';
+---
+<Base
+  title="Menu | Let's Dimsum, Chinese Dim Sum in San Pablo City"
+  description="The full Let's Dimsum menu: xiao long bao, hakaw, siomai, buns, noodle soups, rice bowls, desserts and drinks, with Chinese names and a PDF."
+  jsonLd={[await menuSchema(Astro.site!)]}
+>
+  <div class="page-top">
+    <Menu titleTag="h1" />
+  </div>
+</Base>

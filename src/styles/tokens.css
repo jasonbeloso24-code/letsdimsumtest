@@ -21,9 +21,9 @@
   --color-on-green-muted: rgb(245 240 230 / 0.68);
 
   /* Type */
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-cjk: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --font-body: "Figtree Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-cjk: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
   --display-weight: 330;
   --display-soft: "SOFT" 100, "WONK" 0;
 

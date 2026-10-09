@@ -1,0 +1,12 @@
+# Security headers for every static page and asset (Cloudflare static assets).
+# The Keystatic admin (/keystatic, /api/keystatic) is served by the Worker, so these rules don't apply to it.
+# script-src hash = the one-line <head> script in src/layouts/Base.astro. If you edit that script,
+# run `npm run build && npm run check:dist`; it prints the new hash to paste here.
+# Google Tag Manager / GA4 hosts are allowed only because analytics loads after consent.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-kXTLEHImivTpeMdzxLQWbURwbPY99JwzChIwagsvpIU=' https://www.googletagmanager.com; style-src 'self'; img-src 'self' https://www.googletagmanager.com https://*.google-analytics.com; font-src 'self'; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  X-Frame-Options: DENY

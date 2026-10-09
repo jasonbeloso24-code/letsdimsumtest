@@ -5,9 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/og.mjs && astro build",
     "preview": "astro preview",
-    "images": "python scripts/optimize_images.py"
+    "check": "astro check",
+    "check:dist": "node scripts/check-dist.mjs",
+    "test": "node --test tests/*.test.ts",
+    "images": "python scripts/optimize_images.py",
+    "menu-pdf": "python scripts/make_menu_pdf.py",
+    "favicons": "node scripts/favicons.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.4",
@@ -25,11 +30,16 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@fontsource/figtree": "^5.3.0",
+    "@fontsource/fraunces": "^5.3.0",
     "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "satori": "^0.44.0",
     "typescript": "^6.0.3",
     "wrangler": "^4.149.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

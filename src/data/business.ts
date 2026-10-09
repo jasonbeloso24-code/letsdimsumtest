@@ -16,8 +16,8 @@ export const ADDRESS_LINE = `${ADDRESS.area}, ${ADDRESS.city}, ${ADDRESS.provinc
 // [CLIENT TO CONFIRM] User-reported on Google.
 export const PRICE_PER_PERSON = '₱500 to ₱1,000 per person';
 
-// [CLIENT TO CONFIRM] Replace with the exact Google Business Profile link once the owners share it.
-export const GOOGLE_LISTING_URL = 'https://www.google.com/maps/search/?api=1&query=LET%27S+DIMSUM+San+Pablo+City';
+// [CLIENT TO CONFIRM] Google listing found by searching "LET'S DIMSUM San Pablo City" (place CID). Owners to confirm it's theirs.
+export const GOOGLE_LISTING_URL = 'https://maps.google.com/?cid=2382240538264847043';
 export const MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=LET%27S+DIMSUM+San+Pablo+City';
 
 // [CLIENT TO CONFIRM] URL of the "LET'S Dimsum - San Pablo City" Facebook page.

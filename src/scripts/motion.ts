@@ -65,9 +65,8 @@ function heroScale() {
   const img = frame?.querySelector('img');
   const hero = document.querySelector<HTMLElement>('.hero');
   if (!frame || !img || !hero) return;
-  const offset = ['start start', 'end 0.3'];
-  scroll(animate(frame, { transform: ['scale(0.84)', 'none'] }, { ease: 'linear' }), { target: hero, offset });
-  scroll(animate(img, { transform: [`scale(${1 / 0.84})`, 'none'] }, { ease: 'linear' }), { target: hero, offset });
+  scroll(animate(frame, { transform: ['scale(0.84)', 'none'] }, { ease: 'linear' }), { target: hero, offset: ['start start', 'end 0.3'] });
+  scroll(animate(img, { transform: [`scale(${1 / 0.84})`, 'none'] }, { ease: 'linear' }), { target: hero, offset: ['start start', 'end 0.3'] });
 }
 
 export function animatePanel(panel: HTMLElement) {

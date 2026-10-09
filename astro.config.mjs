@@ -22,6 +22,10 @@ export default defineConfig({
   ],
   // Keep source whitespace: minifying it shifts inline spacing in the approved design.
   compressHTML: false,
+  vite: {
+    // Keystatic's API bundles a CommonJS `cookie`; pre-bundle it so /api/keystatic loads under the Workers dev runtime.
+    ssr: { optimizeDeps: { include: ['@keystatic/core/api/generic'] } },
+  },
   build: {
     // External stylesheets only, so the CSP can stay strict (no inline styles).
     inlineStylesheets: 'never',

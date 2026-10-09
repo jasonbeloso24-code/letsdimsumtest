@@ -3,8 +3,9 @@ import { Picture } from 'astro:assets';
 import { dishes } from '../data/content';
 
 const all = await dishes();
-const squares = all.filter((d) => !d.data.featured);
+// One wide card (the first dish ticked "featured"); every other dish is a square.
 const feature = all.find((d) => d.data.featured);
+const squares = all.filter((d) => d !== feature);
 ---
 <section class="signature section" id="signature" aria-labelledby="signature-title">
   <div class="container">

@@ -14,6 +14,8 @@ const hours = (await getEntry('hours', 'hours'))!.data;
 const closes: Record<string, string> = {};
 for (const row of hours.rows) for (const day of row.days) closes[day] = row.closes;
 const fallback = closes['1'] ?? hours.rows[0].closes;
+// Holiday hours by local date (YYYY-MM-DD) override the weekly note on that day.
+const holidays = Object.fromEntries(hours.holidays.map((h) => [h.date.toISOString().slice(0, 10), h.hours]));
 ---
 <header class="nav" data-nav>
   <div class="nav__inner container">
@@ -24,7 +26,7 @@ const fallback = closes['1'] ?? hours.rows[0].closes;
 
     <p class="nav__hours" aria-live="polite">
       <span class="nav__dot" aria-hidden="true"></span>
-      <span>Open today until <span data-close-time data-closes={JSON.stringify(closes)}>{fallback}</span></span>
+      <span data-hours-text>Open today until <span data-close-time data-closes={JSON.stringify(closes)} data-holidays={JSON.stringify(holidays)}>{fallback}</span></span>
     </p>
 
     <nav class="nav__menu" id="site-nav" aria-label="Primary">

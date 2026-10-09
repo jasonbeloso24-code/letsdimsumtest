@@ -18,7 +18,7 @@ const [a, b] = await photosFor('about');
     </div>
 
     <div class="about__media">
-      {[a, b].map((photo, i) => (
+      {[a, b].filter(Boolean).map((photo, i) => (
         <figure class={`about__photo about__photo--${i ? 'b' : 'a'}`} data-reveal>
           <div class="parallax">
             <Picture

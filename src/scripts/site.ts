@@ -51,8 +51,18 @@ function loadGtm() {
 }
 
 /** Pushes a dataLayer event, but only once the visitor has accepted analytics. */
-export function track(event: string) {
+function track(event: string) {
   if (analyticsOn) window.dataLayer.push({ event });
+}
+
+function clearAnalyticsCookies() {
+  const parts = location.hostname.split('.');
+  const domains = ['', location.hostname, `.${parts.slice(-2).join('.')}`];
+  for (const c of document.cookie.split('; ')) {
+    const name = c.split('=')[0];
+    if (!name.startsWith('_ga')) continue;
+    for (const d of domains) document.cookie = `${name}=; Max-Age=0; path=/${d ? `; domain=${d}` : ''}`;
+  }
 }
 
 function setupConsent() {
@@ -75,8 +85,11 @@ function setupConsent() {
     }
     show(false);
     if (value === 'granted') loadGtm();
-    // Declining after accepting needs a reload to unload GTM.
-    else if (analyticsOn) location.reload();
+    // Declining after accepting: delete the GA cookies, then reload to unload GTM.
+    else if (analyticsOn) {
+      clearAnalyticsCookies();
+      location.reload();
+    }
   });
   document.querySelector('[data-consent-open]')?.addEventListener('click', () => {
     show(true);
@@ -127,12 +140,17 @@ function setupNav() {
   window.addEventListener('scroll', onScroll, { passive: true });
 }
 
-// "Open today until" uses the visitor's day of the week; also marks today's row in the hours table.
+// "Open today until" uses the visitor's day of the week, or today's holiday hours; also marks today's row in the hours table.
 function setupOpenNote() {
-  const day = String(new Date().getDay());
+  const now = new Date();
+  const day = String(now.getDay());
   const el = document.querySelector<HTMLElement>('[data-close-time]');
   const closes = el ? (JSON.parse(el.dataset.closes || '{}') as Record<string, string>) : {};
-  if (el && closes[day]) el.textContent = closes[day];
+  const holidays = el ? (JSON.parse(el.dataset.holidays || '{}') as Record<string, string>) : {};
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const note = el?.closest('.nav__hours')?.querySelector<HTMLElement>('[data-hours-text]');
+  if (holidays[today] && note) note.textContent = `Today: ${holidays[today]}`;
+  else if (el && closes[day]) el.textContent = closes[day];
   document.querySelectorAll<HTMLElement>('.hours tr[data-days]').forEach((row) => {
     row.classList.toggle('is-today', row.dataset.days!.split(',').includes(day));
   });
@@ -184,6 +202,9 @@ function setupLenis() {
       e.preventDefault();
       lenis.scrollTo(id === '#top' ? 0 : target, { offset: -72, duration: 1.4 });
       history.replaceState(null, '', id);
+      // preventDefault stops the browser moving focus, so move it ourselves (skip link, keyboard users).
+      if (!target.matches('a, button, input, select, textarea, [tabindex]')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
     });
   });
 }

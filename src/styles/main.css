@@ -88,6 +88,11 @@ a {
   border-radius: 4px;
 }
 
+/* Sections focused by script after an in-page link (tabindex -1): no box around the whole section */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
 .footer :focus-visible {
   outline-color: var(--color-paper);
 }

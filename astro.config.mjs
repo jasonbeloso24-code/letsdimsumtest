@@ -4,9 +4,9 @@ import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 import sitemap from '@astrojs/sitemap';
 
-// [CLIENT TO CONFIRM] Production URL. Set SITE_URL in the Cloudflare build variables;
-// the fallback is a guess at the pages.dev name and must be replaced before launch.
-const site = process.env.SITE_URL || 'https://letsdimsumtest.pages.dev';
+// [CLIENT TO CONFIRM] Production URL. Set SITE_URL in the Cloudflare build variables once a custom domain exists;
+// the fallback is the current workers.dev production URL of the Cloudflare project.
+const site = process.env.SITE_URL || 'https://letsdimsumtest.jasonbeloso24.workers.dev';
 
 export default defineConfig({
   site,

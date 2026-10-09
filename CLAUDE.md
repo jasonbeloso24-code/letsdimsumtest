@@ -10,7 +10,7 @@ This file has three parts: the Let's Dimsum project notes, how to install the to
 
 **Status:** The design is built and approved by Christian. Do not change the look, layout, copy, images or animation timing unless Christian asks.
 
-**Stack:** Astro, static output, on Cloudflare Pages, because it's a restaurant marketing site with no logins and it's the agency default. Motion (lazy-loaded) for animation and Lenis for smooth scrolling. The Keystatic admin needs a server, and Astro's Cloudflare adapter no longer supports Pages, so a Cloudflare Workers project (static assets + `@astrojs/cloudflare`) runs alongside Pages; Pages serves production until Christian approves moving the domain to Workers. List any standard the build doesn't meet instead of fixing it silently.
+**Stack:** Astro, static output, on Cloudflare Pages, because it's a restaurant marketing site with no logins and it's the agency default. Motion (lazy-loaded) for animation and Lenis for smooth scrolling. The Cloudflare project `letsdimsumtest` is a Workers project with static assets (Workers Builds, git-connected; production https://letsdimsumtest.jasonbeloso24.workers.dev, previews per branch). Keystatic's admin runs on that same Worker through `@astrojs/cloudflare`, since the adapter no longer supports Pages. List any standard the build doesn't meet instead of fixing it silently.
 
 **Folders**
 - `public/`: client branding (logo and mascot), place photos (storefront and interiors) and images (food photos and two printed menu boards).
@@ -209,7 +209,7 @@ Apply these to every website we build. The client brief overrides them only wher
 **Checks:** `npm run check` (types), `npm test`, `npm run build`, `npm run check:dist` (CSP hashes, title/description lengths, one h1). CI runs these plus lychee and Lighthouse CI on every PR.
 
 **[CLIENT TO CONFIRM]**
-- Production URL (`SITE_URL`) and custom domain
+- Custom domain (then set `SITE_URL`; currently https://letsdimsumtest.jasonbeloso24.workers.dev)
 - Full street address (currently San Rafael, San Pablo City, Laguna, plus code 38C4+92Q)
 - Phone number
 - Hours and holiday hours (Keystatic "Confirmed by the owners" box is unticked)

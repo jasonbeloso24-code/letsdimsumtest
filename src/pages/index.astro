@@ -1,3 +1,7 @@
+---
+import '../styles/main.css';
+import { MENU } from '../menu-data.js';
+---
 <!doctype html>
 <html lang="en">
   <head>
@@ -15,7 +19,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <!-- Turn on entrance motion before first paint, unless the visitor prefers reduced motion -->
-    <script>
+    <script is:inline>
+      document.documentElement.classList.add('js');
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('motion');
         // Safety net: if the script never runs, show everything statically.
@@ -257,13 +262,39 @@
           </header>
 
           <div class="menu__tabs-wrap" data-reveal>
-            <div class="menu__tabs" role="tablist" aria-label="Menu categories" data-menu-tabs></div>
+            <div class="menu__tabs" role="tablist" aria-label="Menu categories" data-menu-tabs>
+              {MENU.map((cat, i) => (
+                <button
+                  type="button"
+                  class="menu__tab"
+                  id={`tab-${cat.id}`}
+                  role="tab"
+                  aria-controls={`panel-${cat.id}`}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  tabindex={i === 0 ? 0 : -1}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
           </div>
-          <div class="menu__panel" role="tabpanel" tabindex="0" data-menu-panel></div>
 
-          <noscript>
-            <p class="menu__noscript">Our full menu needs JavaScript to display. Please ask our staff for the printed menu.</p>
-          </noscript>
+          {MENU.map((cat, i) => (
+            <div class="menu__panel" id={`panel-${cat.id}`} role="tabpanel" tabindex="0" aria-labelledby={`tab-${cat.id}`} hidden={i !== 0}>
+              <div class="menu__heading">
+                <h3>{cat.label}</h3>
+                <span lang="zh-Hans">{cat.zh}</span>
+              </div>
+              <ul class="menu__list" role="list">
+                {cat.items.map((item) => (
+                  <li class="menu__item">
+                    <span class="menu__en">{item.en}</span>
+                    <span class="menu__zh" lang="zh-Hans">{item.zh}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -418,6 +449,8 @@
       </div>
     </footer>
 
-    <script type="module" src="/src/main.js"></script>
+    <script>
+      import '../main.js';
+    </script>
   </body>
 </html>

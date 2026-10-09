@@ -1,0 +1,69 @@
+/* Design tokens: colors, type, spacing, motion. Everything else reads from here. */
+:root {
+  /* Brand colors (from the storefront sign and printed menu) */
+  --color-green: #0f5a48;        /* Dimsum green: headings, buttons, footer */
+  --color-yellow: #e1a507;       /* Bamboo yellow: tiny accents only */
+  --color-paper: #f5f0e6;        /* Rice paper: page background */
+  --color-wood: #b98a5a;         /* Steamer wood: hairlines */
+  --color-ink: #23201b;          /* Soy ink: body text */
+
+  /* Derived tones */
+  --color-paper-deep: #ede5d6;   /* cards, image placeholders */
+  --color-paper-soft: #f9f6ef;
+  --color-wood-text: #8a6440;    /* wood, darkened enough to read as small label text */
+  --color-ochre: #94671f;        /* Chinese names, like the menu's gold, readable on paper */
+  --color-ink-muted: #5c554b;
+  --color-green-deep: #0b4a3b;
+  --color-green-soft: #3f7a6a;
+  --color-hairline: rgb(185 138 90 / 0.35);
+  --color-hairline-strong: rgb(185 138 90 / 0.6);
+  --color-on-green: #f5f0e6;
+  --color-on-green-muted: rgb(245 240 230 / 0.68);
+
+  /* Type */
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-cjk: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --display-weight: 330;
+  --display-soft: "SOFT" 100, "WONK" 0;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: clamp(1.125rem, 1rem + 0.4vw, 1.3125rem);
+  --text-xl: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
+  --text-2xl: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  --text-3xl: clamp(2.5rem, 1.4rem + 4vw, 5rem);
+  --text-wordmark: clamp(3.5rem, 1rem + 12vw, 13rem);
+
+  --leading-tight: 1.05;
+  --leading-snug: 1.25;
+  --leading-body: 1.65;
+  --tracking-label: 0.14em;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6rem;
+  --section-pad: clamp(5.5rem, 4rem + 8vw, 11rem);
+  --gutter: clamp(1rem, 0.5rem + 3vw, 3rem);
+  --container: 76rem;
+  --nav-height: 4.25rem;
+
+  /* Shape */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: clamp(1.25rem, 0.8rem + 1.5vw, 2rem);
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 0.25s;
+  --duration-base: 0.5s;
+}

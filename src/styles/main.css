@@ -855,9 +855,14 @@ html:not(.motion) .marquee__group[aria-hidden='true'] {
   color: var(--color-ochre);
 }
 
-.menu__noscript {
-  text-align: center;
-  color: var(--color-ink-muted);
+/* Without JS: hide the tabs and show every category as one long list */
+html:not(.js) .menu__tabs-wrap {
+  display: none;
+}
+
+html:not(.js) .menu__panel[hidden] {
+  display: block;
+  margin-top: var(--space-8);
 }
 
 @media (max-width: 52rem) {

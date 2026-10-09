@@ -2,11 +2,11 @@
 
 One-page website for Let's Dimsum (来点心), an authentic Chinese dim sum restaurant in San Rafael, San Pablo City, Laguna.
 
-Built with Vite (vanilla HTML, CSS and JS), Lenis smooth scrolling and GSAP ScrollTrigger animations.
+Built with Astro (static output), Lenis smooth scrolling and GSAP ScrollTrigger animations.
 
 ## Requirements
 
-- Node.js 18 or newer
+- Node.js 22.12 or newer
 - Python 3 with Pillow (only for re-processing images)
 
 ## Run locally
@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173.
+Open http://localhost:4321.
 
 ## Build and preview
 
@@ -37,10 +37,11 @@ Crops and converts the original photos in `public/` to WebP in `public/img/`. Cr
 
 | What | File |
 | --- | --- |
-| Page content and sections | `index.html` |
+| Page content and sections | `src/pages/index.astro` |
 | Colors, fonts, spacing | `src/styles/tokens.css` |
 | Styles | `src/styles/main.css` |
-| Menu items | `src/menu-data.js` |
+| Menu items (rendered at build time) | `src/menu-data.js` |
 | Animations, menu tabs, Facebook URL | `src/main.js` |
+| Astro settings | `astro.config.mjs` |
 
 See `CLAUDE.md` for project notes, standards and items still to confirm with the client.

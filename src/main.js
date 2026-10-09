@@ -4,7 +4,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import './styles/main.css';
-import { MENU } from './menu-data.js';
 
 // PLACEHOLDER: paste the full URL of the "LET'S Dimsum - San Pablo City" Facebook page here.
 const FACEBOOK_URL = '';
@@ -74,50 +73,19 @@ function setupMarquee() {
 }
 
 function setupMenu() {
-  const tabList = document.querySelector('[data-menu-tabs]');
-  const panel = document.querySelector('[data-menu-panel]');
-  if (!tabList || !panel) return;
+  const tabs = [...document.querySelectorAll('[data-menu-tabs] [role="tab"]')];
+  if (!tabs.length) return;
 
-  const tabs = MENU.map((cat, i) => {
-    const tab = document.createElement('button');
-    tab.type = 'button';
-    tab.className = 'menu__tab';
-    tab.id = `tab-${cat.id}`;
-    tab.setAttribute('role', 'tab');
-    tab.setAttribute('aria-controls', 'menu-panel');
-    tab.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-    tab.tabIndex = i === 0 ? 0 : -1;
-    tab.textContent = cat.label;
-    tabList.appendChild(tab);
-    return tab;
-  });
-  panel.id = 'menu-panel';
-
-  const render = (index, animate) => {
-    const cat = MENU[index];
+  const show = (index) => {
     tabs.forEach((t, i) => {
-      t.setAttribute('aria-selected', i === index ? 'true' : 'false');
-      t.tabIndex = i === index ? 0 : -1;
+      const active = i === index;
+      t.setAttribute('aria-selected', String(active));
+      t.tabIndex = active ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !active;
     });
-    panel.setAttribute('aria-labelledby', tabs[index].id);
-    panel.innerHTML = `
-      <div class="menu__heading">
-        <h3>${cat.label}</h3>
-        <span lang="zh-Hans">${cat.zh}</span>
-      </div>
-      <ul class="menu__list" role="list">
-        ${cat.items
-          .map(
-            (item) => `
-          <li class="menu__item">
-            <span class="menu__en">${item.en}</span>
-            <span class="menu__zh" lang="zh-Hans">${item.zh}</span>
-          </li>`,
-          )
-          .join('')}
-      </ul>`;
 
-    if (animate && !reduceMotion) {
+    if (!reduceMotion) {
+      const panel = document.getElementById(tabs[index].getAttribute('aria-controls'));
       gsap.from(panel.querySelectorAll('.menu__heading, .menu__item'), {
         opacity: 0,
         y: 12,
@@ -131,7 +99,7 @@ function setupMenu() {
   };
 
   tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => render(i, true));
+    tab.addEventListener('click', () => show(i));
     tab.addEventListener('keydown', (e) => {
       let next = null;
       if (e.key === 'ArrowRight') next = (i + 1) % tabs.length;
@@ -141,11 +109,9 @@ function setupMenu() {
       if (next === null) return;
       e.preventDefault();
       tabs[next].focus();
-      render(next, true);
+      show(next);
     });
   });
-
-  render(0, false);
 }
 
 // Split the about paragraph into word spans for the scroll fill.

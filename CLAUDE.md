@@ -186,3 +186,30 @@ Apply these to every website we build. The client brief overrides them only wher
 - Never claim something works, is fast or is secure without checking.
 - When a request conflicts with these standards, explain the trade-off and offer a compliant alternative.
 - End each task with a one or two sentence summary of what changed.
+
+---
+
+## Let's Dimsum: build reference (as built)
+
+**Stack:** Vite 6 (vanilla HTML, CSS, JS), `lenis` (smooth scroll, `lerp: 0.1`), `gsap` + ScrollTrigger (reveals, hero clip, word fill, parallax). Lenis drives ScrollTrigger via `gsap.ticker`. With `prefers-reduced-motion`, Lenis, parallax and the marquee are off and content shows statically.
+
+**Brand in code** (`src/styles/tokens.css`, the single tokens file)
+- Colors: green `#0F5A48`, yellow `#E1A507`, paper `#F5F0E6`, wood `#B98A5A` (hairlines), ink `#23201B`.
+- Derived: `--color-wood-text #8A6440` (small labels, darker for legibility), `--color-ochre #94671F` (Chinese names), `--color-paper-deep`, `--color-paper-soft`, `--color-ink-muted`.
+- Fonts (Google Fonts link in `index.html`): Fraunces 300 to 400 with SOFT 100 (display), Figtree 400 to 600 (body), Noto Serif SC 400 to 500 (Chinese names).
+
+**Sections** (`index.html`, in order): nav (SVG mascot, open-today note), hero, dish marquee, about (word fill), signature dishes, full menu (tabs), our place (photo strip, Google rating, quotes), visit, footer (wordmark 来点心).
+
+**Data and assets**
+- Menu: `src/menu-data.js` (all items from both printed boards, English and Chinese, no prices).
+- Facebook URL: `FACEBOOK_URL` constant at the top of `src/main.js`.
+- Images: `scripts/optimize_images.py` (`npm run images`) crops and converts originals in `public/` to WebP in `public/img/`.
+
+**[CLIENT TO CONFIRM]**
+- Full street address (currently San Rafael, San Pablo City, Laguna, plus code 38C4+92Q)
+- Phone number
+- Hours, plus holiday hours
+- Ordering and booking links (Grab, Foodpanda, reservations)
+- Allergen information
+- Facebook page URL
+- Permission to quote guest reviews (the three quote cards are placeholders)

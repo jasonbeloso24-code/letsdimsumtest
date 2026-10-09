@@ -1,0 +1,25 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+}
+const { title, heading, description } = Astro.props;
+---
+<Base title={title} description={description}>
+  <article class="legal page-top section">
+    <div class="container legal__inner">
+      <p class="eyebrow">Let's Dimsum · 来点心</p>
+      <h1 class="section-title">{heading}</h1>
+      <p class="legal__review" role="note">
+        Template only. This page has not been reviewed by Let's Dimsum's lawyer and must be checked
+        before the site launches. Details in brackets are still to be confirmed by the owners.
+      </p>
+      <div class="legal__body">
+        <slot />
+      </div>
+    </div>
+  </article>
+</Base>

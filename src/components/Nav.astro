@@ -1,0 +1,49 @@
+---
+import { getEntry } from 'astro:content';
+import Mascot from './Mascot.astro';
+import { MAPS_URL } from '../data/business';
+
+interface Props {
+  home: boolean;
+}
+const { home } = Astro.props;
+const base = home ? '' : '/';
+
+// Closing time per weekday (0 = Sunday) for the "Open today" note; site.ts picks today's.
+const hours = (await getEntry('hours', 'hours'))!.data;
+const closes: Record<string, string> = {};
+for (const row of hours.rows) for (const day of row.days) closes[day] = row.closes;
+const fallback = closes['1'] ?? hours.rows[0].closes;
+// Holiday hours by local date (YYYY-MM-DD) override the weekly note on that day.
+const holidays = Object.fromEntries(hours.holidays.map((h) => [h.date.toISOString().slice(0, 10), h.hours]));
+---
+<header class="nav" data-nav>
+  <div class="nav__inner container">
+    <a class="nav__brand" href={home ? '#top' : '/'} aria-label={home ? "Let's Dimsum, back to top" : "Let's Dimsum home"}>
+      <Mascot />
+      <span class="nav__name">Let's Dimsum</span>
+    </a>
+
+    <p class="nav__hours" aria-live="polite">
+      <span class="nav__dot" aria-hidden="true"></span>
+      <span data-hours-text>Open today until <span data-close-time data-closes={JSON.stringify(closes)} data-holidays={JSON.stringify(holidays)}>{fallback}</span></span>
+    </p>
+
+    <nav class="nav__menu" id="site-nav" aria-label="Primary">
+      <ul class="nav__links">
+        <li><a href={`${base}#menu`}>Menu</a></li>
+        <li><a href={`${base}#place`}>Our Place</a></li>
+        <li><a href={`${base}#visit`}>Visit</a></li>
+      </ul>
+      <a class="btn btn--quiet nav__cta" href={MAPS_URL} target="_blank" rel="noopener" data-track="directions_click">
+        Get directions
+      </a>
+    </nav>
+
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="visually-hidden">Open navigation</span>
+      <span class="nav__toggle-line" aria-hidden="true"></span>
+      <span class="nav__toggle-line" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>

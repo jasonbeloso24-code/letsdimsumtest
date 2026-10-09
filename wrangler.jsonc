@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers project "letsdimsumtest" (Workers Builds, connected to this repo): static assets + Keystatic API routes.
+  // The name must match the Worker in the Cloudflare dashboard.
+  // Astro's adapter fills in "main" and "assets" at build time.
+  "name": "letsdimsumtest",
+  "compatibility_date": "2026-10-06",
+  // Keystatic's GitHub API routes use Node APIs.
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true }
+}

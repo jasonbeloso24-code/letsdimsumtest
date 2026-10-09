@@ -1,0 +1,60 @@
+---
+import { Picture } from 'astro:assets';
+import { dishes } from '../data/content';
+
+const all = await dishes();
+// One wide card (the first dish ticked "featured"); every other dish is a square.
+const feature = all.find((d) => d.data.featured);
+const squares = all.filter((d) => d !== feature);
+---
+<section class="signature section" id="signature" aria-labelledby="signature-title">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow" data-reveal>Signature dishes · 招牌菜</p>
+      <h2 class="section-title" id="signature-title" data-reveal>What most tables order first</h2>
+    </header>
+
+    <ul class="dish-grid" role="list">
+      {squares.map((dish) => (
+        <li class="dish" data-reveal>
+          <figure>
+            <div class="dish__img">
+              <Picture
+                src={dish.data.image}
+                formats={['avif', 'webp']}
+                widths={[320, 492]}
+                sizes="(max-width: 40rem) calc(100vw - 2rem), (max-width: 60rem) 45vw, 18rem"
+                alt={dish.data.alt}
+              />
+            </div>
+            <figcaption class="dish__caption">
+              <span class="dish__en">{dish.data.name}</span>
+              <span class="dish__zh" lang="zh-Hans">{dish.data.zh}</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+      {feature && (
+        <li class="dish dish--feature" data-reveal>
+          <figure>
+            <div class="dish__img">
+              <Picture
+                src={feature.data.image}
+                formats={['avif', 'webp']}
+                widths={[320, 512]}
+                sizes="(max-width: 40rem) calc(100vw - 2rem), 26rem"
+                alt={feature.data.alt}
+              />
+            </div>
+            <figcaption class="dish__caption dish__caption--feature">
+              <span class="eyebrow">From the noodle pot</span>
+              <span class="dish__en">{feature.data.name}</span>
+              <span class="dish__zh" lang="zh-Hans">{feature.data.zh}</span>
+              {feature.data.note && <span class="dish__note">{feature.data.note}</span>}
+            </figcaption>
+          </figure>
+        </li>
+      )}
+    </ul>
+  </div>
+</section>

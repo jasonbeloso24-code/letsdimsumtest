@@ -1,0 +1,13 @@
+# [CLIENT TO CONFIRM] Hours come from a Facebook post, not the owners. Tick "confirmed" in Keystatic once they check.
+confirmed: false
+rows:
+  - label: Monday to Friday
+    days: ["1", "2", "3", "4", "5"]
+    opens: 11 AM
+    closes: 9 PM
+  - label: Saturday and Sunday
+    days: ["0", "6"]
+    opens: 11 AM
+    closes: 10 PM
+# [CLIENT TO CONFIRM] Holiday hours are unknown. Add entries like: { date: 2026-12-25, label: Christmas Day, hours: Closed }
+holidays: []

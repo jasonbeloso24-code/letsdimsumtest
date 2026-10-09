@@ -1,0 +1,43 @@
+---
+import { Picture } from 'astro:assets';
+import { photosFor } from '../data/content';
+import { GOOGLE_LISTING_URL } from '../data/business';
+
+// The strip is designed for three photos: one wide, two tall.
+const photos = (await photosFor('place')).slice(0, 3);
+---
+<section class="place section" id="place" aria-labelledby="place-title">
+  <div class="container">
+    <header class="section-head">
+      <p class="eyebrow" data-reveal>Our place · 店内</p>
+      <h2 class="section-title" id="place-title" data-reveal>Soft daylight, wood and rattan</h2>
+    </header>
+  </div>
+
+  <div class="place__strip container">
+    {photos.map((photo, i) => (
+      <figure class={i === 0 ? 'place__photo place__photo--wide' : 'place__photo'} data-reveal>
+        <div class="parallax">
+          <Picture
+            src={photo.data.image}
+            formats={['avif', 'webp']}
+            widths={i === 0 ? [600, 1000, 1400] : [360, 600]}
+            sizes={i === 0 ? '(max-width: 52rem) calc(100vw - 2rem), 44vw' : '(max-width: 52rem) 48vw, 24vw'}
+            alt={photo.data.alt}
+            data-parallax
+          />
+        </div>
+      </figure>
+    ))}
+  </div>
+
+  <div class="container">
+    <p class="place__rating" data-reveal>
+      <a href={GOOGLE_LISTING_URL} target="_blank" rel="noopener">
+        <span class="place__stars" aria-hidden="true">★</span>
+        Read our reviews on Google
+        <span class="visually-hidden">(opens Google Maps)</span>
+      </a>
+    </p>
+  </div>
+</section>

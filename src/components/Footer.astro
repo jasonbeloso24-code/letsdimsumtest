@@ -1,0 +1,41 @@
+---
+import { ADDRESS_LINE, FACEBOOK_URL } from '../data/business';
+
+interface Props {
+  home: boolean;
+}
+const { home } = Astro.props;
+const base = home ? '' : '/';
+const hasAnalytics = Boolean(import.meta.env.PUBLIC_GTM_ID);
+---
+<footer class="footer">
+  <div class="footer__inner container">
+    <div class="footer__top">
+      <p class="footer__tagline">Authentic Chinese dim sum<br />in San Pablo City, Laguna.</p>
+      <ul class="footer__links" role="list">
+        <li><a href={`${base}#menu`}>Menu</a></li>
+        <li><a href={`${base}#place`}>Our Place</a></li>
+        <li><a href={`${base}#visit`}>Visit</a></li>
+        {FACEBOOK_URL && <li><a href={FACEBOOK_URL} target="_blank" rel="noopener">Facebook</a></li>}
+      </ul>
+    </div>
+
+    <!-- Decorative: the name is already in the nav and the copyright line. -->
+    <p class="wordmark" aria-hidden="true">
+      <span class="wordmark__en">Let's Dimsum</span>
+      <span class="wordmark__zh" lang="zh-Hans">来点心</span>
+    </p>
+
+    <div class="footer__bottom">
+      <p class="footer__legal">© {new Date().getFullYear()} Let's Dimsum · {ADDRESS_LINE}</p>
+      <ul class="footer__legal-links" role="list">
+        <li><a href="/privacy/">Privacy</a></li>
+        <li><a href="/cookies/">Cookies</a></li>
+        <li><a href="/terms/">Terms</a></li>
+        <li><a href="/accessibility/">Accessibility</a></li>
+        <li><a href="/allergens/">Allergens</a></li>
+        {hasAnalytics && <li><button type="button" class="footer__consent" data-consent-open>Cookie settings</button></li>}
+      </ul>
+    </div>
+  </div>
+</footer>

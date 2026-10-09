@@ -1,0 +1,21 @@
+---
+const DISHES = [
+  ['Xiao Long Bao', '小笼包'],
+  ['Hakaw', '虾饺'],
+  ['Siomai', '烧卖'],
+  ['Ube Cheese Pao', '紫薯芝士包'],
+  ['Char Siu Pao', '叉烧包'],
+  ['Radish Cake', '萝卜糕'],
+];
+---
+<section class="marquee" aria-label="A few of our dishes">
+  <div class="marquee__track">
+    {[false, true].map((copy) => (
+      <ul class="marquee__group" aria-hidden={copy ? 'true' : undefined}>
+        {DISHES.map(([en, zh]) => (
+          <li><span class="marquee__en">{en}</span><span class="marquee__zh" lang="zh-Hans">{zh}</span></li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</section>

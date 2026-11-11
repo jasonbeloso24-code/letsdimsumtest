@@ -204,6 +204,7 @@ Apply these to every website we build. The client brief overrides them only wher
 - Keystatic (`keystatic.config.ts`, GitHub mode, repo `jasonbeloso24-code/letsdimsumtest`): menu items `src/content/menu/`, signature dishes `src/content/dishes/`, photos `src/content/photos/`, hours with holidays `src/content/hours.yaml`. Read through `src/content.config.ts`.
 - Business facts and link slots: `src/data/business.ts` (`FACEBOOK_URL`, `PHONE`, `ORDER_URL`, `BOOKING_URL`, `GOOGLE_LISTING_URL`, address, price). Empty values hide their button.
 - Photos: originals in `source-assets/` (not shipped); `npm run images` crops them into `src/assets/photos/`; Astro `<Picture>` makes AVIF/WebP. `npm run menu-pdf` builds `public/menu/lets-dimsum-menu.pdf`. `npm run favicons` builds the favicon set. `public/og.png` is generated on every build.
+- Preview noindex: `public/_headers` sends `X-Robots-Tag: noindex` on `letsdimsumtest.jasonbeloso24.workers.dev` only, so the preview stays out of search results. It never applies to the custom domain.
 - Env: `SITE_URL` (canonical/OG/sitemap), `PUBLIC_GTM_ID` (analytics + cookie banner appear only when set), Keystatic secrets (Cloudflare secrets, never the repo).
 
 **Checks:** `npm run check` (types), `npm test`, `npm run build`, `npm run check:dist` (CSP hashes, title/description lengths, one h1). CI runs these plus lychee and Lighthouse CI on every PR.

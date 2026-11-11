@@ -10,3 +10,8 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
   X-Frame-Options: DENY
+
+# Preview address only: keep the workers.dev copy out of search results while the real domain isn't connected.
+# This rule matches only this host, so it never applies to the real domain and needs no removal at launch.
+https://letsdimsumtest.jasonbeloso24.workers.dev/*
+  X-Robots-Tag: noindex
